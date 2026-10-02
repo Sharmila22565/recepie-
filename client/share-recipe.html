@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Share Your Recipe - RecipeShare</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .form-container-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-md);
+      max-width: 860px;
+      margin: 40px auto 60px;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 28px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .image-preview-box {
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      background-color: var(--bg-alt);
+      margin-top: 10px;
+    }
+
+    .image-preview-box img {
+      max-height: 240px;
+      margin: 0 auto;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🍴</span>
+        <div>
+          <span>RecipeShare</span>
+          <span class="logo-tag">Discover. Cook. Share.</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="category.html?cat=Breakfast" class="nav-link">Categories</a></li>
+        <li><a href="favorites.html" class="nav-link private-nav-link" style="display:none;">Favorites ❤️</a></li>
+        <li><a href="share-recipe.html" class="nav-link active private-nav-link" style="display:none;">Share Recipe</a></li>
+        <li><a href="profile.html" class="nav-link private-nav-link" style="display:none;">My Recipes</a></li>
+        <li><a href="profile.html" class="nav-link private-nav-link" style="display:none;">Profile</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
+        <div id="nav-auth-container"></div>
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Share Recipe Form Main Area -->
+  <main class="container">
+    <div class="form-container-card">
+      <div style="text-align:center;margin-bottom:30px;">
+        <h1 class="section-title" id="form-page-title">Share Your Recipe 🍳</h1>
+        <p class="section-subtitle" id="form-page-subtitle" style="margin-bottom:0;">
+          Inspire thousands of home cooks around the world with your signature creations
+        </p>
+      </div>
+
+      <form id="share-recipe-form">
+        
+        <!-- General Info Section -->
+        <div class="form-section-title"><span>📝</span> Basic Recipe Information</div>
+
+        <div class="form-group" style="margin-bottom:16px;">
+          <label for="recipe-title" class="form-label">Recipe Title *</label>
+          <input type="text" id="recipe-title" class="form-input" placeholder="e.g. Crispy Butter Masala Dosa" required style="padding-left:14px;" />
+        </div>
+
+        <div class="form-group" style="margin-bottom:16px;">
+          <label for="recipe-desc" class="form-label">Short Appetizing Description *</label>
+          <textarea id="recipe-desc" class="form-input" rows="3" placeholder="Describe the flavors, textures, and what makes this dish so special..." required style="padding:12px;"></textarea>
+        </div>
+
+        <div class="form-row-2" style="margin-bottom:16px;">
+          <div class="form-group">
+            <label for="recipe-category" class="form-label">Meal Category *</label>
+            <select id="recipe-category" class="form-input" required style="padding-left:14px;">
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Starters">Starters</option>
+              <option value="Dinner">Dinner</option>
+              <option value="Desserts">Desserts</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="recipe-subcategory" class="form-label">Subcategory *</label>
+            <select id="recipe-subcategory" class="form-input" required style="padding-left:14px;">
+              <!-- Dynamically populated based on category -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Recipe Image Section -->
+        <div class="form-section-title"><span>📸</span> Recipe Photography</div>
+        
+        <div class="form-row-2" style="margin-bottom:12px;">
+          <div class="form-group">
+            <label for="recipe-image-file" class="form-label">Upload Image File (JPG/PNG/WEBP)</label>
+            <input type="file" id="recipe-image-file" class="form-input" accept="image/*" style="padding:8px 14px;" />
+          </div>
+          <div class="form-group">
+            <label for="recipe-image-url" class="form-label">Or Paste Image URL</label>
+            <input type="url" id="recipe-image-url" class="form-input" placeholder="https://images.unsplash.com/..." style="padding-left:14px;" />
+          </div>
+        </div>
+
+        <div class="image-preview-box" id="image-preview-wrap" style="display:none;">
+          <span style="font-size:0.85rem;color:var(--text-muted);display:block;margin-bottom:8px;">Live Image Preview:</span>
+          <img id="image-preview-img" src="" alt="Recipe Preview" />
+        </div>
+
+        <!-- Timings & Classifications -->
+        <div class="form-section-title"><span>⏱️</span> Cooking Metrics & Classification</div>
+
+        <div class="form-row-3" style="margin-bottom:16px;">
+          <div class="form-group">
+            <label for="recipe-prep" class="form-label">Prep Time (mins) *</label>
+            <input type="number" id="recipe-prep" class="form-input" min="1" value="15" required style="padding-left:14px;" />
+          </div>
+          <div class="form-group">
+            <label for="recipe-cook" class="form-label">Cook Time (mins) *</label>
+            <input type="number" id="recipe-cook" class="form-input" min="1" value="20" required style="padding-left:14px;" />
+          </div>
+          <div class="form-group">
+            <label for="recipe-servings" class="form-label">Servings (people) *</label>
+            <input type="number" id="recipe-servings" class="form-input" min="1" value="4" required style="padding-left:14px;" />
+          </div>
+        </div>
+
+        <div class="form-row-3" style="margin-bottom:16px;">
+          <div class="form-group">
+            <label for="recipe-difficulty" class="form-label">Difficulty</label>
+            <select id="recipe-difficulty" class="form-input" style="padding-left:14px;">
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="recipe-diet" class="form-label">Diet Type</label>
+            <select id="recipe-diet" class="form-input" style="padding-left:14px;">
+              <option value="Vegetarian">🟢 Vegetarian</option>
+              <option value="Non-Vegetarian">🔴 Non-Vegetarian</option>
+              <option value="Vegan">🌱 Vegan</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="recipe-cuisine" class="form-label">Cuisine</label>
+            <input type="text" id="recipe-cuisine" class="form-input" placeholder="e.g. South Indian" value="South Indian" style="padding-left:14px;" />
+          </div>
+        </div>
+
+        <div class="form-row-2" style="margin-bottom:16px;">
+          <div class="form-group">
+            <label for="recipe-spice" class="form-label">Spice Level</label>
+            <select id="recipe-spice" class="form-input" style="padding-left:14px;">
+              <option value="None">None</option>
+              <option value="Mild">Mild</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Hot">Hot</option>
+              <option value="Extra Hot">Extra Hot 🔥</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="recipe-allergens" class="form-label">Allergens (comma separated)</label>
+            <input type="text" id="recipe-allergens" class="form-input" placeholder="e.g. Dairy, Nuts, Gluten" style="padding-left:14px;" />
+          </div>
+        </div>
+
+        <!-- Ingredients Dynamic Builder -->
+        <div class="form-section-title">
+          <span>🥗</span> Ingredients List
+          <button type="button" class="btn btn-secondary btn-sm" id="add-ingredient-btn" style="margin-left:auto;">+ Add Ingredient</button>
+        </div>
+        <div id="ingredients-inputs-container" style="margin-bottom:20px;">
+          <div class="dynamic-row" style="display:flex;gap:10px;margin-bottom:10px;">
+            <input type="text" class="form-input ingredient-input" placeholder="e.g. 2 cups Basmati Rice" required style="padding-left:14px;" />
+            <button type="button" class="btn btn-secondary btn-sm" onclick="this.parentElement.remove()" style="color:var(--danger);padding:0 14px;">✕</button>
+          </div>
+        </div>
+
+        <!-- Instructions Dynamic Builder -->
+        <div class="form-section-title">
+          <span>👩‍🍳</span> Step-by-Step Instructions
+          <button type="button" class="btn btn-secondary btn-sm" id="add-step-btn" style="margin-left:auto;">+ Add Step</button>
+        </div>
+        <div id="steps-inputs-container" style="margin-bottom:20px;">
+          <div class="dynamic-row" style="display:flex;gap:10px;margin-bottom:10px;">
+            <span style="font-weight:700;color:var(--primary);margin-top:10px;min-width:24px;">1.</span>
+            <textarea class="form-input step-input" rows="2" placeholder="Describe the first preparation step..." required style="padding-left:14px;resize:vertical;"></textarea>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="this.parentElement.remove(); renumberSteps();" style="color:var(--danger);padding:0 14px;align-self:flex-start;">✕</button>
+          </div>
+        </div>
+
+        <!-- Optional Nutrition Section -->
+        <div class="form-section-title"><span>📊</span> Estimated Nutrition per Serving (Optional)</div>
+        <div class="form-row-3" style="margin-bottom:14px;">
+          <div class="form-group">
+            <label for="nut-calories" class="form-label">Calories (kcal)</label>
+            <input type="number" id="nut-calories" class="form-input" placeholder="e.g. 320" style="padding-left:14px;" />
+          </div>
+          <div class="form-group">
+            <label for="nut-protein" class="form-label">Protein (g)</label>
+            <input type="number" id="nut-protein" class="form-input" placeholder="e.g. 12" style="padding-left:14px;" />
+          </div>
+          <div class="form-group">
+            <label for="nut-carbs" class="form-label">Carbs (g)</label>
+            <input type="number" id="nut-carbs" class="form-input" placeholder="e.g. 45" style="padding-left:14px;" />
+          </div>
+        </div>
+
+        <div class="form-row-3" style="margin-bottom:20px;">
+          <div class="form-group">
+            <label for="nut-fat" class="form-label">Fat (g)</label>
+            <input type="number" id="nut-fat" class="form-input" placeholder="e.g. 8" style="padding-left:14px;" />
+          </div>
+          <div class="form-group">
+            <label for="nut-fiber" class="form-label">Fiber (g)</label>
+            <input type="number" id="nut-fiber" class="form-input" placeholder="e.g. 4" style="padding-left:14px;" />
+          </div>
+          <div class="form-group">
+            <label for="nut-sodium" class="form-label">Sodium (mg)</label>
+            <input type="number" id="nut-sodium" class="form-input" placeholder="e.g. 350" style="padding-left:14px;" />
+          </div>
+        </div>
+
+        <input type="hidden" id="nut-sugar" value="0" />
+
+        <!-- Chef Tips & Storage -->
+        <div class="form-section-title"><span>💡</span> Chef Tips & Serving Suggestions</div>
+
+        <div class="form-group" style="margin-bottom:16px;">
+          <label for="recipe-tips" class="form-label">Chef's Secret Tips</label>
+          <textarea id="recipe-tips" class="form-input" rows="2" placeholder="Any special cooking tricks, temperature advice, or flavor secrets?" style="padding:12px;"></textarea>
+        </div>
+
+        <div class="form-row-2" style="margin-bottom:28px;">
+          <div class="form-group">
+            <label for="recipe-served-with" class="form-label">Best Served With</label>
+            <input type="text" id="recipe-served-with" class="form-input" placeholder="e.g. Fresh Coconut Chutney and Sambar" style="padding-left:14px;" />
+          </div>
+          <div class="form-group">
+            <label for="recipe-storage" class="form-label">Storage Instructions</label>
+            <input type="text" id="recipe-storage" class="form-input" placeholder="e.g. Keep refrigerated for up to 3 days" style="padding-left:14px;" />
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div style="display:flex;justify-content:center;gap:16px;">
+          <button type="submit" class="btn btn-primary btn-lg" id="submit-recipe-btn" style="min-width:240px;">
+            Publish Recipe 🚀
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 RecipeShare. "Discover. Cook. Share."</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/share-recipe.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Favorite Recipes - RecipeShare</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🍴</span>
+        <div>
+          <span>RecipeShare</span>
+          <span class="logo-tag">Discover. Cook. Share.</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="category.html?cat=Breakfast" class="nav-link">Categories</a></li>
+        <li><a href="favorites.html" class="nav-link active private-nav-link" style="display:none;">Favorites ❤️</a></li>
+        <li><a href="share-recipe.html" class="nav-link private-nav-link" style="display:none;">Share Recipe</a></li>
+        <li><a href="profile.html" class="nav-link private-nav-link" style="display:none;">My Recipes</a></li>
+        <li><a href="profile.html" class="nav-link private-nav-link" style="display:none;">Profile</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
+        <div id="nav-auth-container"></div>
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Favorites Content -->
+  <main class="container" style="padding: 40px 24px 80px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;border-bottom:1px solid var(--border-color);padding-bottom:20px;flex-wrap:wrap;gap:16px;">
+      <div>
+        <h1 class="section-title">My Favorite Recipes ❤️</h1>
+        <p class="section-subtitle" style="margin-bottom:0;">Your personalized cookbook of saved recipes</p>
+      </div>
+      <div>
+        <span id="favorites-count" class="badge badge-category" style="font-size:0.92rem;padding:8px 16px;">
+          Loading...
+        </span>
+      </div>
+    </div>
+
+    <!-- Favorites Grid -->
+    <div class="recipe-grid" id="favorites-grid">
+      <!-- Injected dynamically via favorites.js -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 RecipeShare. "Discover. Cook. Share."</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/favorites.js"></script>
+</body>
+</html>

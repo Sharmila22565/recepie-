@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Category Exploration - RecipeShare</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .category-banner {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg-alt) 100%);
+      padding: 50px 0;
+      border-bottom: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .main-cat-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .main-cat-tab {
+      padding: 10px 22px;
+      border-radius: var(--radius-full);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .main-cat-tab:hover,
+    .main-cat-tab.active {
+      background-color: var(--primary);
+      border-color: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .subcat-chips-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 24px 0 16px;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .subcat-chip {
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .subcat-chip:hover,
+    .subcat-chip.active {
+      background-color: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🍴</span>
+        <div>
+          <span>RecipeShare</span>
+          <span class="logo-tag">Discover. Cook. Share.</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="category.html?cat=Breakfast" class="nav-link active">Categories</a></li>
+        <li><a href="favorites.html" class="nav-link private-nav-link" style="display:none;">Favorites ❤️</a></li>
+        <li><a href="share-recipe.html" class="nav-link private-nav-link" style="display:none;">Share Recipe</a></li>
+        <li><a href="profile.html" class="nav-link private-nav-link" style="display:none;">My Recipes</a></li>
+        <li><a href="profile.html" class="nav-link private-nav-link" style="display:none;">Profile</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
+        <div id="nav-auth-container">
+          <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+          <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+        </div>
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Category Banner -->
+  <div class="category-banner">
+    <div class="container">
+      <h1 class="section-title" id="category-title">Breakfast</h1>
+      <p class="section-subtitle" id="category-desc" style="max-width:600px;margin:0 auto 20px;">
+        Explore authentic regional and international dishes.
+      </p>
+
+      <!-- Main Category Switcher -->
+      <div class="main-cat-tabs">
+        <button class="main-cat-tab active" data-cat="Breakfast">🥞 Breakfast</button>
+        <button class="main-cat-tab" data-cat="Lunch">🍛 Lunch</button>
+        <button class="main-cat-tab" data-cat="Starters">🍢 Starters</button>
+        <button class="main-cat-tab" data-cat="Dinner">🥘 Dinner</button>
+        <button class="main-cat-tab" data-cat="Desserts">🍨 Desserts</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <main class="container" style="padding: 30px 24px 60px;">
+    <!-- Subcategory Chips Bar -->
+    <div style="margin-bottom: 24px;">
+      <span style="font-size:0.85rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:8px;">
+        Filter by Subcategory
+      </span>
+      <div class="subcat-chips-bar" id="subcategory-chips">
+        <!-- Subcategory chips dynamically injected -->
+      </div>
+    </div>
+
+    <!-- Header bar with sorting & counts -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+      <span id="category-count" style="font-weight:600;font-size:0.95rem;color:var(--text-muted);">
+        Loading recipes...
+      </span>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <label for="category-sort" style="font-size:0.9rem;font-weight:600;">Sort By:</label>
+        <select id="category-sort" class="form-input" style="padding:6px 14px;width:auto;">
+          <option value="newest">Newest First</option>
+          <option value="rating">Top Rated ⭐</option>
+          <option value="time">Quickest Cook Time ⏱</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Recipes Grid -->
+    <div class="recipe-grid" id="category-recipes-grid">
+      <!-- Injected dynamically via category.js -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 RecipeShare. "Discover. Cook. Share."</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/category.js"></script>
+</body>
+</html>

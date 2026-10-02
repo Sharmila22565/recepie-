@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - RecipeShare</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🍴</span>
+        <div>
+          <span>RecipeShare</span>
+          <span class="logo-tag">Discover. Cook. Share.</span>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
+        <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Login Area -->
+  <main class="auth-page">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">🍴 RecipeShare</div>
+        <h1 class="auth-title">Welcome Back</h1>
+        <p class="auth-subtitle">Sign in to access your saved recipes & favorites</p>
+      </div>
+
+      <div class="alert-box alert-danger" id="login-alert"></div>
+
+      <form class="auth-form" id="login-form">
+        <div class="form-group">
+          <label for="login-email" class="form-label">Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="login-email" class="form-input" placeholder="chef@example.com" required autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="login-password" class="form-label">
+            <span>Password</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required autocomplete="current-password" />
+            <span class="password-toggle-btn" id="toggle-pwd-btn">👁️</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" id="login-submit-btn" style="width:100%;margin-top:10px;">
+          Sign In 🍳
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Don't have an account yet? <a href="register.html">Create one for free</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Password toggle
+    const toggleBtn = document.getElementById('toggle-pwd-btn');
+    const pwdInput = document.getElementById('login-password');
+    if (toggleBtn && pwdInput) {
+      toggleBtn.onclick = () => {
+        const isPwd = pwdInput.type === 'password';
+        pwdInput.type = isPwd ? 'text' : 'password';
+        toggleBtn.textContent = isPwd ? '🙈' : '👁️';
+      };
+    }
+
+    // Login Form Submit
+    const loginForm = document.getElementById('login-form');
+    const alertBox = document.getElementById('login-alert');
+    const submitBtn = document.getElementById('login-submit-btn');
+
+    loginForm.onsubmit = async (e) => {
+      e.preventDefault();
+      alertBox.classList.remove('show');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Signing in...';
+
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      try {
+        const res = await Auth.login(email, password);
+        showToast(res.message || 'Login successful!', 'success');
+
+        const redirectUrl = sessionStorage.getItem('redirect_after_login');
+        sessionStorage.removeItem('redirect_after_login');
+
+        setTimeout(() => {
+          window.location.href = redirectUrl || 'index.html';
+        }, 600);
+      } catch (err) {
+        alertBox.textContent = err.message || 'Invalid email or password';
+        alertBox.classList.add('show');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign In 🍳';
+      }
+    };
+  </script>
+</body>
+</html>

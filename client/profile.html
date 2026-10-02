@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile & Shared Recipes - RecipeShare</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .profile-hero {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg-alt) 100%);
+      padding: 50px 0 40px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .profile-header-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .profile-user-info {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .profile-avatar-large {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      font-weight: 800;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .profile-stats-bar {
+      display: flex;
+      gap: 30px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 28px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-stat-box {
+      text-align: center;
+    }
+
+    .profile-stat-num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: block;
+    }
+
+    .profile-stat-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🍴</span>
+        <div>
+          <span>RecipeShare</span>
+          <span class="logo-tag">Discover. Cook. Share.</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="category.html?cat=Breakfast" class="nav-link">Categories</a></li>
+        <li><a href="favorites.html" class="nav-link private-nav-link" style="display:none;">Favorites ❤️</a></li>
+        <li><a href="share-recipe.html" class="nav-link private-nav-link" style="display:none;">Share Recipe</a></li>
+        <li><a href="profile.html" class="nav-link active private-nav-link" style="display:none;">My Recipes</a></li>
+        <li><a href="profile.html" class="nav-link active private-nav-link" style="display:none;">Profile</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
+        <div id="nav-auth-container"></div>
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Profile Hero Header -->
+  <section class="profile-hero">
+    <div class="container">
+      <div class="profile-header-card">
+        <div class="profile-user-info">
+          <div class="profile-avatar-large" id="profile-avatar">U</div>
+          <div>
+            <h1 style="font-size:1.8rem;font-weight:800;" id="profile-name">User Name</h1>
+            <span style="color:var(--text-muted);font-size:0.95rem;" id="profile-email">user@example.com</span>
+            <p style="color:var(--text-main);margin-top:6px;font-size:0.92rem;max-width:400px;" id="profile-bio">
+              Food lover & passionate home cook
+            </p>
+          </div>
+        </div>
+
+        <!-- User Stats -->
+        <div class="profile-stats-bar">
+          <div class="profile-stat-box">
+            <span class="profile-stat-num" id="stat-recipes">0</span>
+            <span class="profile-stat-label">Recipes Shared</span>
+          </div>
+          <div class="profile-stat-box">
+            <span class="profile-stat-num" id="stat-favorites">0</span>
+            <span class="profile-stat-label">Favorites Saved</span>
+          </div>
+          <div class="profile-stat-box">
+            <span class="profile-stat-num" id="stat-reviews">0</span>
+            <span class="profile-stat-label">Reviews Written</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="toggleProfileEditModal(true)">
+            ✏️ Edit Profile
+          </button>
+          <a href="share-recipe.html" class="btn btn-primary btn-sm">
+            ➕ Share Recipe
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- My Recipes Section -->
+  <main class="container" style="padding: 40px 24px 80px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+      <div>
+        <h2 class="section-title">My Published Recipes 🍲</h2>
+        <p class="section-subtitle" style="margin-bottom:0;">Manage and curate the recipes you have contributed to the community</p>
+      </div>
+      <span id="my-recipes-count" class="badge badge-category">0 recipes</span>
+    </div>
+
+    <!-- My Recipes Grid -->
+    <div class="recipe-grid" id="my-recipes-grid">
+      <!-- Injected dynamically via profile.js -->
+    </div>
+  </main>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size:1.3rem;font-weight:700;">Edit Profile Information</h3>
+        <button class="modal-close-btn" onclick="toggleProfileEditModal(false)">✕</button>
+      </div>
+      <form id="profile-edit-form">
+        <div class="form-group" style="margin-bottom:16px;">
+          <label for="edit-name" class="form-label">Full Name</label>
+          <input type="text" id="edit-name" class="form-input" required style="padding-left:14px;" />
+        </div>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label for="edit-bio" class="form-label">Bio</label>
+          <textarea id="edit-bio" class="form-input" rows="3" style="padding:10px;"></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom:20px;">
+          <label for="edit-avatar-url" class="form-label">Profile Image URL</label>
+          <input type="url" id="edit-avatar-url" class="form-input" placeholder="https://..." style="padding-left:14px;" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="toggleProfileEditModal(false)">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Recipe Confirmation Modal -->
+  <div class="modal-overlay" id="delete-modal">
+    <div class="modal-content" style="max-width:420px;">
+      <div class="modal-header">
+        <h3 style="font-size:1.2rem;font-weight:700;color:var(--danger);">Delete Recipe</h3>
+        <button class="modal-close-btn" id="cancel-delete-btn">✕</button>
+      </div>
+      <p style="margin-bottom:16px;color:var(--text-main);">
+        Are you sure you want to permanently delete <strong id="delete-recipe-name">this recipe</strong>? This action cannot be undone.
+      </p>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" id="cancel-delete-btn-2" onclick="document.getElementById('delete-modal').classList.remove('show');">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="confirm-delete-btn" style="background-color:var(--danger);border-color:var(--danger);">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 RecipeShare. "Discover. Cook. Share."</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

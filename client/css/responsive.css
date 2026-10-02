@@ -1,0 +1,146 @@
+/* ==========================================================================
+   RECIPESHARE - RESPONSIVE STYLES & BREAKPOINTS
+   ========================================================================== */
+
+/* Large Desktop (1200px and below) */
+@media (max-width: 1200px) {
+  .recipe-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+/* Tablet (992px and below) */
+@media (max-width: 992px) {
+  .recipe-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .recipe-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .recipe-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 40px;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-stats {
+    justify-content: center;
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 76px;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    padding: 24px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    box-shadow: var(--shadow-lg);
+    display: none;
+    z-index: 999;
+  }
+
+  .nav-menu.show {
+    display: flex;
+  }
+
+  .nav-link {
+    padding: 12px 16px;
+    font-size: 1.05rem;
+  }
+}
+
+/* Mobile Devices (768px and below) */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .recipe-title {
+    font-size: 2rem;
+  }
+
+  .recipe-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .metrics-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .metric-item:nth-child(2) {
+    border-right: none;
+  }
+
+  .categories-nav-scroll {
+    overflow-x: auto;
+    padding-bottom: 10px;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .auth-card {
+    padding: 30px 20px;
+  }
+
+  .form-row-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Small Mobile (480px and below) */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .recipe-title {
+    font-size: 1.65rem;
+  }
+
+  .btn-lg {
+    padding: 12px 22px;
+    font-size: 0.95rem;
+  }
+
+  .toast {
+    min-width: 90vw;
+  }
+}
